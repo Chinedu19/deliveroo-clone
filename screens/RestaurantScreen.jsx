@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { urlFor } from "../sanity";
 import { ArrowLeftIcon, StarIcon } from "react-native-heroicons/solid";
@@ -18,6 +18,8 @@ import {
 } from "react-native-heroicons/outline";
 import DishRow from "../components/DishRow";
 import BasketIcon from "../components/BasketIcon";
+import { useDispatch } from "react-redux";
+import { setRestaurant } from "../features/restaurantSlice";
 const RestaurantScreen = () => {
   const {
     params: {
@@ -33,6 +35,23 @@ const RestaurantScreen = () => {
       lat,
     },
   } = useRoute();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      setRestaurant({
+        id,
+        imgUrl,
+        title,
+        rating,
+        genre,
+        address,
+        short_description,
+        dishes,
+        long,
+        lat,
+      })
+    );
+  }, [dispatch]);
   const navigation = useNavigation();
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }}>
