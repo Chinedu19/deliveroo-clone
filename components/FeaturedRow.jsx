@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ArrowRightIcon } from "react-native-heroicons/outline";
 import RestaurantCard from "./RestaurantCard";
@@ -36,28 +36,31 @@ const FeaturedRow = ({ id, title, description }) => {
         <ArrowRightIcon color="#00CCBB" />
       </View>
       <Text className="text-xs text-gray-500 px-4">{description}</Text>
-      <ScrollView
+      {/* Restaurant cards */}
+      <FlatList
         horizontal
+        data={restaurants}
         contentContainerStyle={{
           paddingHorizontal: 15,
         }}
         showsHorizontalScrollIndicator={false}
         className="pt-4"
-      >
-        {/* Restaurant cards */}
-        <RestaurantCard
-          id="123"
-          imgUrl={demoImage}
-          title="Yo! Sushi"
-          rating={4.5}
-          genre="Japanese"
-          address="123 Main St."
-          short_description="This is a description"
-          dishes={[]}
-          long={20}
-          lat={32}
-        />
-      </ScrollView>
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <RestaurantCard
+            id={item._id}
+            imgUrl={item.image}
+            title={item.name}
+            rating={item.rating}
+            genre={item.type?.name}
+            address={item.address}
+            short_description={item.short_description}
+            dishes={item.dishes}
+            long={item.long}
+            lat={item.lat}
+          />
+        )}
+      />
     </View>
   );
 };
